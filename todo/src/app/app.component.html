@@ -1,0 +1,30 @@
+<h1 class="title">{{ title }}</h1>
+<ul *ngIf="mode=='list'">
+  <p class="text-center" *ngIf="todos.length==0"><small>Não tem nenhuma tarefa hoje</small></p>
+  <li *ngFor="let todo of todos"> {{ todo.title }}
+    <button *ngIf="!todo.done" (click)="markAsDone(todo)">CONCLUIR</button>
+    <button *ngIf="todo.done" (click)="markAsUndone(todo)">REFAZER</button>
+    <button (click)="remove(todo)">REMOVER</button>
+  </li>
+</ul>
+
+<div id="modal" *ngIf="mode=='add'">
+  <h1 class="text-center">Nova Tarefa</h1>
+  <form [formGroup]="form">
+    <label>Tarefa</label>
+    <input type="text" placeholder="Titulo da Tarefa" maxlength="60" formControlName="title">
+    <small *ngIf="form.controls.title.invalid && !form.controls.title.pristine">
+      Este campo deve conter entre 3 a 60 caracteres</small>
+    <p class="text-center">
+      <button class="button" [disabled]="form.invalid" (click)="add()">Salvar</button>
+    </p>
+  </form>
+  <br><br>
+</div>
+
+<button class="add-button button" (click)="changeMode('add')" *ngIf="mode=='list'">
+  NOVA TAREFA
+</button>
+<button class="add-button button" (click)="changeMode('list')" *ngIf="mode=='add'">
+  CANCELAR
+</button>
